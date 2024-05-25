@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { HiDotsCircleHorizontal } from "react-icons/hi"
+import { HiDotsHorizontal } from "react-icons/hi"
 
 export default function Post({ post, id }) {
     return (
@@ -15,7 +15,7 @@ export default function Post({ post, id }) {
                         <h4 className="font-bold text-sm truncate">{ post?.name }</h4>
                         <span className="text-sm truncate">@{ post?.username }</span>
                     </div>
-                    <HiDotsCircleHorizontal className="text-sm" />
+                    <HiDotsHorizontal className="text-xl" />
                 </div>
                 
                 {/* 贴文正文 */}
