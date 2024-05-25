@@ -78,6 +78,8 @@ export default function Input() {
         setText('')
         setImageFileUrl(null)
         setSelectedFile(null)
+        // 刷新网页获取最新贴文
+        location.reload()
     }
 
 
