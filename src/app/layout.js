@@ -12,6 +12,8 @@ export const metadata = {
     description: "It's MyGo Website!!!!!",
 };
 
+export const dynamic = 'force-dynamic'
+
 export default function RootLayout({ children }) {
     return (
       <SessionWrapper>
