@@ -1,10 +1,9 @@
 "use client"
 
-import { getFirestore, or } from "firebase/firestore"
 import { HiDotsHorizontal } from "react-icons/hi"
 import { HiHeart, HiOutlineHeart } from "react-icons/hi"
 import {app} from "@/firebase"
-import { collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore"
+import { collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc, getFirestore } from "firebase/firestore"
 import { signIn, useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 
