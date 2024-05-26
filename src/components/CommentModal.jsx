@@ -5,8 +5,9 @@ import { modalState, postIdState } from "@/atom/modalAtom"
 import Modal from "react-modal"
 import { HiX } from "react-icons/hi"
 import { useEffect, useState } from "react"
-import { doc, getFirestore } from "firebase/firestore"
+import { addDoc, collection, doc, getFirestore } from "firebase/firestore"
 import { app } from "@/firebase"
+import { useRouter } from "next/navigation"
 
 
 
@@ -19,6 +20,7 @@ export default function CommentModal() {
     const [post, setPost] = useState({})
     const [input, setInput] = useState('')
     const db = getFirestore(app)
+    const router = useRouter()
 
     useEffect(() => {
         if (postId !== '') {
@@ -38,7 +40,21 @@ export default function CommentModal() {
     }, [postId])
 
     // sendComment 函数将用于发送评论
-    const sendComment = async () => {}
+    const sendComment = async () => {
+        addDoc(collection(db, 'posts', postId, 'comments'), {
+            name: session.user.name,
+            username: session.user.username,
+            image: session.user.image,
+            comment: input,
+            timestamp: serverTimestamp()
+        }).then(() => {
+            setInput('')
+            setOpen(false)
+            router.push(`/post/${postId}`)
+        }).catch((error) => {
+            console.error('Error adding document: ', error)
+        })
+    }
 
     return (
         <div>
