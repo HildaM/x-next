@@ -6,7 +6,7 @@ import { collection, deleteDoc, doc, onSnapshot, serverTimestamp, setDoc } from 
 import { app } from "@/firebase"
 import { useEffect } from "react"
 
-export default function Icons({ id }) {
+export default function Icons({ id, uid }) {
     const { data: session } = useSession()
     const db = app.firestore(app)
     const [isLiked, setIsLiked] = useState(false)
@@ -22,6 +22,22 @@ export default function Icons({ id }) {
                 username: session.user.username,
                 timestamp: serverTimestamp(),
             })
+        }
+    }
+
+    const deletePost = async () => {
+        if (!session) return signIn()
+        if (session?.user?.uid !== uid) return alert('You can only delete your own posts!') // 确认只有发帖用户才能删除
+
+        if (window.confirm('Are you sure you want to delete this post?')) {
+            deleteDoc(doc(db, 'posts', id))
+                .then(() => {
+                    console.log('Post deleted!')
+                    window.location.reload()
+                })
+                .catch((error) => {
+                    console.error('Error removing document: ', error)
+                })
         }
     }
 
@@ -58,7 +74,12 @@ export default function Icons({ id }) {
                 {likes.length > 0 && <span className={`text-xs ${isLiked && "text-red-600"}`}>{likes.length}</span>}
             </div>
 
-            <HiOutlineTrash className="h-8 w-8 cursor-pointer rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-red-100"/>
+            {/* 只有发帖用户才能删除 */}
+            {session?.user?.uid === uid && (
+                <HiOutlineTrash className="h-8 w-8 cursor-pointer rounded-full transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-red-100"
+                    onClick={deletePost}
+                />
+            )}
         </div>
     )
 }
